@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+
 import '../../../controllers/mood_controller.dart';
 import '../../../controllers/task_controller.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_constants.dart';
 import '../../../views/widgets/calendar_strip.dart';
-import '../../../views/widgets/task_list.dart';
 import '../../../views/widgets/mood_indicator.dart';
+import '../../../views/widgets/task_list.dart';
 import '../task/task_creation_screen.dart';
 
 class Dashboard extends StatefulWidget {
@@ -78,7 +79,7 @@ class _DashboardState extends State<Dashboard> {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          
+
           // Calendar
           Expanded(
             child: Consumer<TaskController>(
@@ -113,7 +114,9 @@ class _DashboardState extends State<Dashboard> {
                     final tasksForDay = taskController.allTasks
                         .where((task) => isSameDay(task.date, day))
                         .toList();
-                    return tasksForDay.map((task) => task.id.toString()).toList();
+                    return tasksForDay
+                        .map((task) => task.id.toString())
+                        .toList();
                   },
                 );
               },
@@ -140,9 +143,9 @@ class _DashboardState extends State<Dashboard> {
                   Text(
                     '${_getMonthName(_focusedDate.month)} ${_focusedDate.year}',
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      color: AppColors.primaryText,
-                      fontWeight: FontWeight.w600,
-                    ),
+                          color: AppColors.primaryText,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                   const SizedBox(width: 8),
                   const Icon(
@@ -177,9 +180,9 @@ class _DashboardState extends State<Dashboard> {
             focusedDate: _focusedDate,
             onDateSelected: _onDateSelected,
           ),
-          
+
           const SizedBox(height: AppConstants.paddingMedium),
-          
+
           // Task List
           Expanded(
             child: Consumer<TaskController>(
@@ -187,7 +190,8 @@ class _DashboardState extends State<Dashboard> {
                 if (taskController.isLoading) {
                   return const Center(
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryOrange),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          AppColors.primaryOrange),
                     ),
                   );
                 }
@@ -195,8 +199,10 @@ class _DashboardState extends State<Dashboard> {
                 return TaskList(
                   tasks: taskController.tasks,
                   selectedDate: _selectedDate,
-                  onTaskToggle: (taskId) => taskController.toggleTaskCompletion(taskId),
-                  onTaskFavorite: (taskId) => taskController.toggleTaskFavorite(taskId),
+                  onTaskToggle: (taskId) =>
+                      taskController.toggleTaskCompletion(taskId),
+                  onTaskFavorite: (taskId) =>
+                      taskController.toggleTaskFavorite(taskId),
                   onTaskDelete: (taskId) => taskController.deleteTask(taskId),
                   onTaskEdit: (task) {
                     // Navigate to task edit screen
@@ -250,17 +256,17 @@ class _DashboardState extends State<Dashboard> {
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            
+
             Text(
               'How are you feeling?',
               style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                color: AppColors.primaryText,
-                fontWeight: FontWeight.w600,
-              ),
+                    color: AppColors.primaryText,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
-            
+
             const SizedBox(height: AppConstants.paddingLarge),
-            
+
             Consumer<MoodController>(
               builder: (context, moodController, child) {
                 return GridView.builder(
@@ -284,7 +290,8 @@ class _DashboardState extends State<Dashboard> {
                           color: AppColors.getMoodColor(mood.name),
                           borderRadius: BorderRadius.circular(16),
                           border: moodController.isMoodSelected(mood)
-                              ? Border.all(color: AppColors.primaryOrange, width: 3)
+                              ? Border.all(
+                                  color: AppColors.primaryOrange, width: 3)
                               : null,
                         ),
                         child: Center(
@@ -307,8 +314,18 @@ class _DashboardState extends State<Dashboard> {
 
   String _getMonthName(int month) {
     const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
     ];
     return months[month - 1];
   }
