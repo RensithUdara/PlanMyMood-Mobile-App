@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../controllers/app_controller.dart';
 import '../../../controllers/mood_controller.dart';
 import '../../../models/mood.dart';
@@ -66,7 +67,7 @@ class _MoodSelectionScreenState extends State<MoodSelectionScreen> {
   Future<void> _completeOnboardingAndNavigate() async {
     final appController = Provider.of<AppController>(context, listen: false);
     await appController.completeOnboarding();
-    
+
     if (mounted) {
       Navigator.of(context).pushNamedAndRemoveUntil(
         '/dashboard',
@@ -85,7 +86,8 @@ class _MoodSelectionScreenState extends State<MoodSelectionScreen> {
             if (moodController.isLoading) {
               return const Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryOrange),
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(AppColors.primaryOrange),
                 ),
               );
             }
@@ -100,10 +102,11 @@ class _MoodSelectionScreenState extends State<MoodSelectionScreen> {
                       const SizedBox(height: AppConstants.paddingMedium),
                       Text(
                         AppConstants.onboardingTitles[3],
-                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          color: AppColors.primaryText,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.displayMedium?.copyWith(
+                                  color: AppColors.primaryText,
+                                  fontWeight: FontWeight.bold,
+                                ),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: AppConstants.paddingMedium),
@@ -136,7 +139,9 @@ class _MoodSelectionScreenState extends State<MoodSelectionScreen> {
                         width: double.infinity,
                         height: 56,
                         child: ElevatedButton(
-                          onPressed: _selectedMood != null ? _continueToConfirmation : null,
+                          onPressed: _selectedMood != null
+                              ? _continueToConfirmation
+                              : null,
                           child: const Text(
                             'Continue',
                             style: TextStyle(
@@ -146,13 +151,13 @@ class _MoodSelectionScreenState extends State<MoodSelectionScreen> {
                           ),
                         ),
                       ),
-                      
+
                       const SizedBox(height: AppConstants.paddingMedium),
-                      
+
                       // Skip Button
                       TextButton(
                         onPressed: _skipMoodSelection,
-                        child: Text(
+                        child: const Text(
                           'Skip for now',
                           style: TextStyle(
                             fontSize: 18,
