@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../models/mood.dart';
 import '../../utils/app_colors.dart';
-import '../../utils/app_constants.dart';
 
 class MoodIndicator extends StatelessWidget {
   final Mood? mood;
@@ -21,7 +21,7 @@ class MoodIndicator extends StatelessWidget {
         width: 50,
         height: 50,
         decoration: BoxDecoration(
-          color: mood != null 
+          color: mood != null
               ? AppColors.getMoodColor(mood!.name)
               : AppColors.grayDisabled,
           borderRadius: BorderRadius.circular(12),
@@ -29,11 +29,11 @@ class MoodIndicator extends StatelessWidget {
             color: AppColors.white,
             width: 2,
           ),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: AppColors.shadow,
               blurRadius: 8,
-              offset: const Offset(0, 2),
+              offset: Offset(0, 2),
             ),
           ],
         ),
