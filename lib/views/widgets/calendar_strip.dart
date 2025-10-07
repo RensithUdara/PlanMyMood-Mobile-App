@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../utils/app_colors.dart';
 import '../../utils/app_constants.dart';
 
@@ -21,7 +22,8 @@ class CalendarStrip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: AppConstants.paddingSmall),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: AppConstants.paddingMedium),
+        padding:
+            const EdgeInsets.symmetric(horizontal: AppConstants.paddingMedium),
         itemCount: 14, // Show 2 weeks
         itemBuilder: (context, index) {
           final date = DateTime.now().subtract(Duration(days: 7 - index));
@@ -34,9 +36,8 @@ class CalendarStrip extends StatelessWidget {
               width: 60,
               margin: const EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
-                color: isSelected
-                    ? AppColors.primaryOrange
-                    : AppColors.lightCream,
+                color:
+                    isSelected ? AppColors.primaryOrange : AppColors.lightCream,
                 borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                 border: isToday && !isSelected
                     ? Border.all(color: AppColors.primaryOrange, width: 2)
@@ -49,24 +50,24 @@ class CalendarStrip extends StatelessWidget {
                   Text(
                     _getDayOfWeek(date.weekday),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: isSelected
-                          ? AppColors.lightText
-                          : AppColors.secondaryText,
-                      fontWeight: FontWeight.w600,
-                    ),
+                          color: isSelected
+                              ? AppColors.lightText
+                              : AppColors.secondaryText,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
-                  
+
                   const SizedBox(height: 4),
-                  
+
                   // Date
                   Text(
                     date.day.toString(),
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: isSelected
-                          ? AppColors.lightText
-                          : AppColors.primaryText,
-                      fontWeight: FontWeight.bold,
-                    ),
+                          color: isSelected
+                              ? AppColors.lightText
+                              : AppColors.primaryText,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ],
               ),
