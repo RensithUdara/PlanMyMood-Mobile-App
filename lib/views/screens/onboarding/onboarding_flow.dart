@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../controllers/app_controller.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_constants.dart';
@@ -99,7 +100,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                 },
               ),
             ),
-            
+
             // Bottom Section
             Padding(
               padding: const EdgeInsets.all(AppConstants.paddingLarge),
@@ -113,9 +114,9 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                       (index) => _buildProgressDot(index),
                     ),
                   ),
-                  
+
                   const SizedBox(height: AppConstants.paddingLarge),
-                  
+
                   // Next Button
                   SizedBox(
                     width: double.infinity,
