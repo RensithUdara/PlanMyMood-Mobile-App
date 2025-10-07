@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../models/mood.dart';
 import '../../utils/app_colors.dart';
-import '../../utils/app_constants.dart';
 
 class MoodSelector extends StatelessWidget {
   final List<Mood> moods;
@@ -19,7 +19,7 @@ class MoodSelector extends StatelessWidget {
 
   void _toggleMood(Mood mood) {
     List<Mood> newSelectedMoods = List.from(selectedMoods);
-    
+
     if (allowMultiSelect) {
       // Multi-select mode
       if (newSelectedMoods.any((m) => m.id == mood.id)) {
@@ -35,13 +35,13 @@ class MoodSelector extends StatelessWidget {
         newSelectedMoods = [mood];
       }
     }
-    
+
     onMoodsChanged(newSelectedMoods);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 60,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -49,7 +49,7 @@ class MoodSelector extends StatelessWidget {
         itemBuilder: (context, index) {
           final mood = moods[index];
           final isSelected = selectedMoods.any((m) => m.id == mood.id);
-          
+
           return GestureDetector(
             onTap: () => _toggleMood(mood),
             child: Container(
@@ -62,11 +62,11 @@ class MoodSelector extends StatelessWidget {
                 border: isSelected
                     ? Border.all(color: AppColors.primaryOrange, width: 3)
                     : null,
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: AppColors.shadow,
                     blurRadius: 4,
-                    offset: const Offset(0, 2),
+                    offset: Offset(0, 2),
                   ),
                 ],
               ),
