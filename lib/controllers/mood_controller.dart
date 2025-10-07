@@ -16,7 +16,11 @@ class MoodController extends ChangeNotifier {
 
   Future<void> loadMoods() async {
     _isLoading = true;
-    notifyListeners();
+    
+    // Delay notification to avoid setState during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
 
     try {
       _moods = await _databaseHelper.getAllMoods();
