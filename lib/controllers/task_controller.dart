@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
-import '../models/task.dart';
-import '../models/mood.dart';
+
 import '../database/database_helper.dart';
+import '../models/task.dart';
 
 class TaskController extends ChangeNotifier {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
-  
+
   List<Task> _tasks = [];
   List<Task> _filteredTasks = [];
   DateTime _selectedDate = DateTime.now();
@@ -78,8 +78,8 @@ class TaskController extends ChangeNotifier {
     // Apply date filter
     _filteredTasks = _filteredTasks.where((task) {
       return task.date.year == _selectedDate.year &&
-             task.date.month == _selectedDate.month &&
-             task.date.day == _selectedDate.day;
+          task.date.month == _selectedDate.month &&
+          task.date.day == _selectedDate.day;
     }).toList();
 
     // Apply mood filter
@@ -93,7 +93,10 @@ class TaskController extends ChangeNotifier {
     if (_searchQuery.isNotEmpty) {
       _filteredTasks = _filteredTasks.where((task) {
         return task.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-               (task.description?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false);
+            (task.description
+                    ?.toLowerCase()
+                    .contains(_searchQuery.toLowerCase()) ??
+                false);
       }).toList();
     }
 
@@ -117,11 +120,11 @@ class TaskController extends ChangeNotifier {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
-      
+
       _tasks.add(newTask);
       _applyFilters();
       notifyListeners();
-      
+
       return newTask;
     } catch (e) {
       if (kDebugMode) {
@@ -135,7 +138,7 @@ class TaskController extends ChangeNotifier {
     try {
       final updatedTask = task.copyWith(updatedAt: DateTime.now());
       await _databaseHelper.updateTask(updatedTask);
-      
+
       final index = _tasks.indexWhere((t) => t.id == task.id);
       if (index != -1) {
         _tasks[index] = updatedTask;
@@ -170,7 +173,7 @@ class TaskController extends ChangeNotifier {
   Future<bool> toggleTaskCompletion(int taskId) async {
     try {
       await _databaseHelper.toggleTaskCompletion(taskId);
-      
+
       final index = _tasks.indexWhere((task) => task.id == taskId);
       if (index != -1) {
         _tasks[index] = _tasks[index].copyWith(
@@ -193,7 +196,7 @@ class TaskController extends ChangeNotifier {
   Future<bool> toggleTaskFavorite(int taskId) async {
     try {
       await _databaseHelper.toggleTaskFavorite(taskId);
-      
+
       final index = _tasks.indexWhere((task) => task.id == taskId);
       if (index != -1) {
         _tasks[index] = _tasks[index].copyWith(
@@ -236,7 +239,7 @@ class TaskController extends ChangeNotifier {
   List<Task> getTasksForDateRange(DateTime startDate, DateTime endDate) {
     return _tasks.where((task) {
       return task.date.isAfter(startDate.subtract(const Duration(days: 1))) &&
-             task.date.isBefore(endDate.add(const Duration(days: 1)));
+          task.date.isBefore(endDate.add(const Duration(days: 1)));
     }).toList();
   }
 
@@ -248,7 +251,8 @@ class TaskController extends ChangeNotifier {
   }
 
   int get totalTasks => _tasks.length;
-  int get completedTasksCount => _tasks.where((task) => task.isCompleted).length;
+  int get completedTasksCount =>
+      _tasks.where((task) => task.isCompleted).length;
   int get pendingTasksCount => _tasks.where((task) => !task.isCompleted).length;
   int get favoriteTasksCount => _tasks.where((task) => task.isFavorite).length;
 
