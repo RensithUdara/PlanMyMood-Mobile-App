@@ -29,9 +29,8 @@ class Mood {
       name: map['name'],
       emoji: map['emoji'],
       color: map['color'],
-      createdAt: map['created_at'] != null 
-          ? DateTime.parse(map['created_at']) 
-          : null,
+      createdAt:
+          map['created_at'] != null ? DateTime.parse(map['created_at']) : null,
     );
   }
 
@@ -68,9 +67,6 @@ class Mood {
 
   @override
   int get hashCode {
-    return id.hashCode ^
-        name.hashCode ^
-        emoji.hashCode ^
-        color.hashCode;
+    return id.hashCode ^ name.hashCode ^ emoji.hashCode ^ color.hashCode;
   }
 }
