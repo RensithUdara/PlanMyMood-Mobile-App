@@ -28,8 +28,8 @@ class UserPreferences {
       id: map['id'],
       onboardingCompleted: map['onboarding_completed'] == 1,
       selectedMoodId: map['selected_mood_id'],
-      lastMoodUpdate: map['last_mood_update'] != null 
-          ? DateTime.parse(map['last_mood_update']) 
+      lastMoodUpdate: map['last_mood_update'] != null
+          ? DateTime.parse(map['last_mood_update'])
           : null,
       theme: map['theme'] ?? 'light',
     );
