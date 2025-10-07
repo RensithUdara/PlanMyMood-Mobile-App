@@ -25,7 +25,10 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-    _loadTasksForDate(_selectedDate);
+    // Delay loading until after the first frame to avoid setState during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadTasksForDate(_selectedDate);
+    });
   }
 
   Future<void> _loadTasksForDate(DateTime date) async {
