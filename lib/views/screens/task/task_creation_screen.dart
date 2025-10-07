@@ -93,8 +93,6 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
     });
   }
 
-
-
   void _onIconColorSelected(String iconColor) {
     setState(() {
       _selectedIconColor = iconColor;
