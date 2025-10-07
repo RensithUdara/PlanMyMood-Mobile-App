@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
 import '../../models/task.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_constants.dart';
@@ -37,7 +38,7 @@ class TaskList extends StatelessWidget {
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
-        
+
         return Slidable(
           key: ValueKey(task.id),
           endActionPane: ActionPane(
@@ -46,29 +47,25 @@ class TaskList extends StatelessWidget {
               // Complete/Uncomplete Action
               SlidableAction(
                 onPressed: (context) => onTaskToggle(task.id!),
-                backgroundColor: task.isCompleted 
-                    ? AppColors.grayDisabled 
+                backgroundColor: task.isCompleted
+                    ? AppColors.grayDisabled
                     : AppColors.greenTask,
                 foregroundColor: AppColors.lightText,
-                icon: task.isCompleted 
-                    ? Icons.undo 
-                    : Icons.check,
+                icon: task.isCompleted ? Icons.undo : Icons.check,
                 label: task.isCompleted ? 'Undo' : 'Done',
               ),
-              
+
               // Favorite Action
               SlidableAction(
                 onPressed: (context) => onTaskFavorite(task.id!),
-                backgroundColor: task.isFavorite 
-                    ? AppColors.grayDisabled 
+                backgroundColor: task.isFavorite
+                    ? AppColors.grayDisabled
                     : AppColors.yellowTask,
                 foregroundColor: AppColors.lightText,
-                icon: task.isFavorite 
-                    ? Icons.star_border 
-                    : Icons.star,
+                icon: task.isFavorite ? Icons.star_border : Icons.star,
                 label: task.isFavorite ? 'Unstar' : 'Star',
               ),
-              
+
               // Edit Action
               SlidableAction(
                 onPressed: (context) => onTaskEdit(task),
@@ -77,7 +74,7 @@ class TaskList extends StatelessWidget {
                 icon: Icons.edit,
                 label: 'Edit',
               ),
-              
+
               // Delete Action
               SlidableAction(
                 onPressed: (context) => _confirmDelete(context, task),
@@ -116,24 +113,20 @@ class TaskList extends StatelessWidget {
               color: AppColors.grayDisabled,
             ),
           ),
-          
           const SizedBox(height: AppConstants.paddingLarge),
-          
           Text(
             'No tasks for today',
             style: Theme.of(context).textTheme.displaySmall?.copyWith(
-              color: AppColors.secondaryText,
-              fontWeight: FontWeight.w600,
-            ),
+                  color: AppColors.secondaryText,
+                  fontWeight: FontWeight.w600,
+                ),
           ),
-          
           const SizedBox(height: AppConstants.paddingMedium),
-          
           Text(
             'Tap the + button to create your first task',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.secondaryText,
-            ),
+                  color: AppColors.secondaryText,
+                ),
             textAlign: TextAlign.center,
           ),
         ],
@@ -150,7 +143,7 @@ class TaskList extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text(
+            child: const Text(
               'Cancel',
               style: TextStyle(color: AppColors.secondaryText),
             ),
