@@ -23,7 +23,11 @@ class TaskController extends ChangeNotifier {
 
   Future<void> loadTasks() async {
     _isLoading = true;
-    notifyListeners();
+
+    // Delay notification to avoid setState during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
 
     try {
       _tasks = await _databaseHelper.getAllTasks();
@@ -41,7 +45,7 @@ class TaskController extends ChangeNotifier {
   Future<void> loadTasksByDate(DateTime date) async {
     _isLoading = true;
     _selectedDate = date;
-    
+
     // Delay notification to avoid setState during build
     WidgetsBinding.instance.addPostFrameCallback((_) {
       notifyListeners();
