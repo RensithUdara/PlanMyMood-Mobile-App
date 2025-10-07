@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 
 import '../database/database_helper.dart';
 import '../models/mood.dart';
@@ -16,7 +17,11 @@ class MoodController extends ChangeNotifier {
 
   Future<void> loadMoods() async {
     _isLoading = true;
-    notifyListeners();
+
+    // Delay notification to avoid setState during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
 
     try {
       _moods = await _databaseHelper.getAllMoods();
