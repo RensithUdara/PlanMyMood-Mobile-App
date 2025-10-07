@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../controllers/app_controller.dart';
 import '../../../controllers/mood_controller.dart';
 import '../../../models/mood.dart';
@@ -18,11 +19,12 @@ class MoodConfirmationScreen extends StatelessWidget {
   Future<void> _confirmMoodAndContinue(BuildContext context) async {
     try {
       final appController = Provider.of<AppController>(context, listen: false);
-      final moodController = Provider.of<MoodController>(context, listen: false);
+      final moodController =
+          Provider.of<MoodController>(context, listen: false);
 
       // Set selected mood
       await moodController.selectMood(selectedMood);
-      
+
       // Complete onboarding
       await appController.completeOnboarding();
 
@@ -32,7 +34,8 @@ class MoodConfirmationScreen extends StatelessWidget {
             pageBuilder: (context, animation, secondaryAnimation) {
               return const Dashboard();
             },
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
               return FadeTransition(opacity: animation, child: child);
             },
             transitionDuration: AppConstants.fadeAnimationDuration,
@@ -67,19 +70,19 @@ class MoodConfirmationScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              
+
               // Title
               Text(
                 'Your mood for today!',
                 style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  color: AppColors.primaryText,
-                  fontWeight: FontWeight.bold,
-                ),
+                      color: AppColors.primaryText,
+                      fontWeight: FontWeight.bold,
+                    ),
                 textAlign: TextAlign.center,
               ),
-              
+
               const SizedBox(height: AppConstants.paddingXLarge),
-              
+
               // Large Mood Display
               Container(
                 width: 150,
@@ -87,11 +90,11 @@ class MoodConfirmationScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.getMoodColor(selectedMood.name),
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: AppColors.shadow,
                       blurRadius: 20,
-                      offset: const Offset(0, 10),
+                      offset: Offset(0, 10),
                     ),
                   ],
                 ),
@@ -102,21 +105,21 @@ class MoodConfirmationScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: AppConstants.paddingLarge),
-              
+
               // Mood Name
               Text(
                 selectedMood.name,
                 style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                  color: AppColors.primaryText,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryText,
+                      fontWeight: FontWeight.w600,
+                    ),
                 textAlign: TextAlign.center,
               ),
-              
+
               const Spacer(),
-              
+
               // Continue Button
               SizedBox(
                 width: double.infinity,
@@ -132,13 +135,13 @@ class MoodConfirmationScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: AppConstants.paddingMedium),
-              
+
               // Misclicked Button
               TextButton(
                 onPressed: () => _goBack(context),
-                child: Text(
+                child: const Text(
                   'Misclicked',
                   style: TextStyle(
                     fontSize: 18,
@@ -147,7 +150,7 @@ class MoodConfirmationScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: AppConstants.paddingLarge),
             ],
           ),
