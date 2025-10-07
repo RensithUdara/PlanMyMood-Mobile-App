@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import '../../../controllers/task_controller.dart';
+import 'package:provider/provider.dart';
+
 import '../../../controllers/mood_controller.dart';
-import '../../../models/task.dart';
+import '../../../controllers/task_controller.dart';
 import '../../../models/mood.dart';
+import '../../../models/task.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_constants.dart';
 import '../../../views/widgets/mood_selector.dart';
@@ -27,7 +28,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
-  
+
   DateTime _selectedDate = DateTime.now();
   String _selectedIconType = 'task';
   String _selectedIconColor = '#9B8CE8';
@@ -42,7 +43,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
     super.initState();
     _selectedDate = widget.initialDate;
     _isEditing = widget.taskToEdit != null;
-    
+
     if (_isEditing) {
       _populateFieldsForEditing();
     }
@@ -55,7 +56,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
     _selectedDate = task.date;
     _selectedIconType = task.iconType;
     _selectedIconColor = task.iconColor;
-    
+
     // Load selected moods
     final moodController = Provider.of<MoodController>(context, listen: false);
     _selectedMoods = moodController.getMoodsByIds(task.moodIds);
@@ -71,14 +72,14 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: AppColors.primaryOrange,
-            ),
+                  primary: AppColors.primaryOrange,
+                ),
           ),
           child: child!,
         );
       },
     );
-    
+
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
@@ -112,19 +113,20 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
 
   Future<void> _saveTask() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final taskController = Provider.of<TaskController>(context, listen: false);
-      
+      final taskController =
+          Provider.of<TaskController>(context, listen: false);
+
       final task = Task(
         id: _isEditing ? widget.taskToEdit!.id : null,
         title: _titleController.text.trim(),
-        description: _descriptionController.text.trim().isEmpty 
-            ? null 
+        description: _descriptionController.text.trim().isEmpty
+            ? null
             : _descriptionController.text.trim(),
         iconType: _selectedIconType,
         iconColor: _selectedIconColor,
@@ -201,9 +203,9 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
         title: Text(
           _isEditing ? 'Edit Task' : 'New Task',
           style: Theme.of(context).textTheme.displayMedium?.copyWith(
-            color: AppColors.primaryText,
-            fontWeight: FontWeight.w600,
-          ),
+                color: AppColors.primaryText,
+                fontWeight: FontWeight.w600,
+              ),
         ),
         centerTitle: true,
       ),
@@ -214,34 +216,34 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
           children: [
             // Task Input Section
             _buildTaskInputSection(),
-            
+
             const SizedBox(height: AppConstants.paddingLarge),
-            
+
             // Task Templates (only for new tasks)
             if (!_isEditing) _buildTaskTemplatesSection(),
-            
+
             const SizedBox(height: AppConstants.paddingLarge),
-            
+
             // When Section
             _buildWhenSection(),
-            
+
             const SizedBox(height: AppConstants.paddingLarge),
-            
+
             // Pick Moods Section
             _buildMoodsSection(),
-            
+
             const SizedBox(height: AppConstants.paddingLarge),
-            
+
             // Icon Selection Section
             _buildIconSection(),
-            
+
             const SizedBox(height: AppConstants.paddingLarge),
-            
+
             // Reminder Section
             _buildReminderSection(),
-            
+
             const SizedBox(height: AppConstants.paddingXLarge),
-            
+
             // Save Button
             SizedBox(
               width: double.infinity,
@@ -250,7 +252,8 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
                 onPressed: _isLoading ? null : _saveTask,
                 child: _isLoading
                     ? const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.lightText),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppColors.lightText),
                       )
                     : Text(
                         _isEditing ? 'Update task' : 'Create a task',
@@ -273,11 +276,11 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: AppColors.shadow,
             blurRadius: 4,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
       ),
@@ -300,9 +303,9 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
                   size: 20,
                 ),
               ),
-              
+
               const SizedBox(width: AppConstants.paddingMedium),
-              
+
               // Text Input
               Expanded(
                 child: TextFormField(
@@ -327,9 +330,9 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
               ),
             ],
           ),
-          
+
           const Divider(height: 32),
-          
+
           // Description Input
           TextFormField(
             controller: _descriptionController,
@@ -341,7 +344,8 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
             style: Theme.of(context).textTheme.bodyMedium,
             maxLines: 3,
             validator: (value) {
-              if (value != null && value.length > AppConstants.maxTaskDescriptionLength) {
+              if (value != null &&
+                  value.length > AppConstants.maxTaskDescriptionLength) {
                 return 'Description too long (max ${AppConstants.maxTaskDescriptionLength} characters)';
               }
               return null;
@@ -359,60 +363,61 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
         Text(
           'Quick suggestions',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: AppColors.primaryText,
-            fontWeight: FontWeight.w600,
-          ),
+                color: AppColors.primaryText,
+                fontWeight: FontWeight.w600,
+              ),
         ),
-        
         const SizedBox(height: AppConstants.paddingMedium),
-        
         ...AppConstants.taskTemplates.map((template) => Container(
-          margin: const EdgeInsets.only(bottom: 8),
-          child: Material(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(AppConstants.borderRadius),
-            child: InkWell(
-              onTap: () {
-                _titleController.text = template['title']!;
-                _selectedIconType = template['iconType']!;
-                _selectedIconColor = template['iconColor']!;
-                setState(() {});
-              },
-              borderRadius: BorderRadius.circular(AppConstants.borderRadius),
-              child: Container(
-                padding: const EdgeInsets.all(AppConstants.paddingMedium),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: AppColors.getTaskIconColor(template['iconColor']!),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Icon(
-                        _getIconData(template['iconType']!),
-                        color: AppColors.lightText,
-                        size: 16,
-                      ),
-                    ),
-                    
-                    const SizedBox(width: AppConstants.paddingMedium),
-                    
-                    Expanded(
-                      child: Text(
-                        template['title']!,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.primaryText,
+              margin: const EdgeInsets.only(bottom: 8),
+              child: Material(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+                child: InkWell(
+                  onTap: () {
+                    _titleController.text = template['title']!;
+                    _selectedIconType = template['iconType']!;
+                    _selectedIconColor = template['iconColor']!;
+                    setState(() {});
+                  },
+                  borderRadius:
+                      BorderRadius.circular(AppConstants.borderRadius),
+                  child: Container(
+                    padding: const EdgeInsets.all(AppConstants.paddingMedium),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            color: AppColors.getTaskIconColor(
+                                template['iconColor']!),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Icon(
+                            _getIconData(template['iconType']!),
+                            color: AppColors.lightText,
+                            size: 16,
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: AppConstants.paddingMedium),
+                        Expanded(
+                          child: Text(
+                            template['title']!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: AppColors.primaryText,
+                                ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-        )).toList(),
+            )),
       ],
     );
   }
@@ -424,13 +429,11 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
         Text(
           'When?',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: AppColors.primaryText,
-            fontWeight: FontWeight.w600,
-          ),
+                color: AppColors.primaryText,
+                fontWeight: FontWeight.w600,
+              ),
         ),
-        
         const SizedBox(height: AppConstants.paddingMedium),
-        
         GestureDetector(
           onTap: _selectDate,
           child: Container(
@@ -442,25 +445,21 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
             ),
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.calendar_today,
                   color: AppColors.primaryOrange,
                   size: 20,
                 ),
-                
                 const SizedBox(width: AppConstants.paddingMedium),
-                
                 Text(
                   DateFormat('MMM dd, yyyy').format(_selectedDate),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.primaryText,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryText,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
-                
                 const Spacer(),
-                
-                Icon(
+                const Icon(
                   Icons.arrow_drop_down,
                   color: AppColors.secondaryText,
                 ),
@@ -481,13 +480,11 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
             Text(
               'Pick moods',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: AppColors.primaryText,
-                fontWeight: FontWeight.w600,
-              ),
+                    color: AppColors.primaryText,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
-            
             const SizedBox(height: AppConstants.paddingMedium),
-            
             MoodSelector(
               moods: moodController.moods,
               selectedMoods: _selectedMoods,
@@ -506,13 +503,13 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
         Text(
           'Icon & Color',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: AppColors.primaryText,
-            fontWeight: FontWeight.w600,
-          ),
+                color: AppColors.primaryText,
+                fontWeight: FontWeight.w600,
+              ),
         ),
-        
+
         const SizedBox(height: AppConstants.paddingMedium),
-        
+
         // Color Selection
         Wrap(
           spacing: 12,
@@ -553,13 +550,11 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
         Text(
           'Reminder',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: AppColors.primaryText,
-            fontWeight: FontWeight.w600,
-          ),
+                color: AppColors.primaryText,
+                fontWeight: FontWeight.w600,
+              ),
         ),
-        
         const SizedBox(height: AppConstants.paddingMedium),
-        
         Row(
           children: AppConstants.reminderTypes.map((type) {
             final isSelected = _selectedReminderType == type;
@@ -573,18 +568,24 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
                     vertical: 12,
                   ),
                   decoration: BoxDecoration(
-                    color: isSelected ? AppColors.primaryOrange : AppColors.white,
-                    borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+                    color:
+                        isSelected ? AppColors.primaryOrange : AppColors.white,
+                    borderRadius:
+                        BorderRadius.circular(AppConstants.borderRadius),
                     border: Border.all(
-                      color: isSelected ? AppColors.primaryOrange : AppColors.mediumBeige,
+                      color: isSelected
+                          ? AppColors.primaryOrange
+                          : AppColors.mediumBeige,
                     ),
                   ),
                   child: Text(
                     type,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: isSelected ? AppColors.lightText : AppColors.primaryText,
-                      fontWeight: FontWeight.w600,
-                    ),
+                          color: isSelected
+                              ? AppColors.lightText
+                              : AppColors.primaryText,
+                          fontWeight: FontWeight.w600,
+                        ),
                     textAlign: TextAlign.center,
                   ),
                 ),
