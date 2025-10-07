@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../models/mood.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_constants.dart';
@@ -33,7 +34,8 @@ class MoodGrid extends StatelessWidget {
       itemBuilder: (context, index) {
         final mood = moods[index];
         final isSelected = selectedMood?.id == mood.id;
-        final isMultiSelected = selectedMoods?.any((m) => m.id == mood.id) ?? false;
+        final isMultiSelected =
+            selectedMoods?.any((m) => m.id == mood.id) ?? false;
 
         return GestureDetector(
           onTap: () => onMoodSelected(mood),
@@ -41,15 +43,16 @@ class MoodGrid extends StatelessWidget {
             duration: AppConstants.fadeAnimationDuration,
             decoration: BoxDecoration(
               color: AppColors.getMoodColor(mood.name),
-              borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
+              borderRadius:
+                  BorderRadius.circular(AppConstants.cardBorderRadius),
               border: (isSelected || isMultiSelected)
                   ? Border.all(color: AppColors.primaryOrange, width: 3)
                   : null,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: AppColors.shadow,
                   blurRadius: 8,
-                  offset: const Offset(0, 4),
+                  offset: Offset(0, 4),
                 ),
               ],
             ),
@@ -61,16 +64,16 @@ class MoodGrid extends StatelessWidget {
                   mood.emoji,
                   style: const TextStyle(fontSize: 48),
                 ),
-                
+
                 const SizedBox(height: AppConstants.paddingSmall),
-                
+
                 // Mood Name
                 Text(
                   mood.name,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.primaryText,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryText,
+                        fontWeight: FontWeight.w600,
+                      ),
                   textAlign: TextAlign.center,
                 ),
               ],
