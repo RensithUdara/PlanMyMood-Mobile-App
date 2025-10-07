@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../controllers/app_controller.dart';
 import '../../controllers/mood_controller.dart';
 import '../../controllers/task_controller.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_constants.dart';
-import 'onboarding/onboarding_flow.dart';
 import 'home/dashboard.dart';
+import 'onboarding/onboarding_flow.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -57,12 +58,14 @@ class _SplashScreenState extends State<SplashScreen>
     try {
       // Initialize controllers
       final appController = Provider.of<AppController>(context, listen: false);
-      final moodController = Provider.of<MoodController>(context, listen: false);
-      final taskController = Provider.of<TaskController>(context, listen: false);
+      final moodController =
+          Provider.of<MoodController>(context, listen: false);
+      final taskController =
+          Provider.of<TaskController>(context, listen: false);
 
       // Initialize app controller first
       await appController.initialize();
-      
+
       // Load moods and tasks
       await Future.wait([
         moodController.loadMoods(),
@@ -84,7 +87,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _navigateToNextScreen() {
     final appController = Provider.of<AppController>(context, listen: false);
-    
+
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) {
@@ -148,11 +151,11 @@ class _SplashScreenState extends State<SplashScreen>
                       decoration: BoxDecoration(
                         color: AppColors.apathetic,
                         borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: AppColors.shadow,
                             blurRadius: 20,
-                            offset: const Offset(0, 10),
+                            offset: Offset(0, 10),
                           ),
                         ],
                       ),
@@ -162,36 +165,37 @@ class _SplashScreenState extends State<SplashScreen>
                         color: AppColors.lightText,
                       ),
                     ),
-                    
+
                     const SizedBox(height: 40),
-                    
+
                     // App Name
                     Text(
                       AppConstants.appName,
                       style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                        color: AppColors.primaryText,
-                        fontWeight: FontWeight.bold,
-                      ),
+                            color: AppColors.primaryText,
+                            fontWeight: FontWeight.bold,
+                          ),
                       textAlign: TextAlign.center,
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Tagline
                     Text(
                       AppConstants.appTagline,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.secondaryText,
-                        fontWeight: FontWeight.normal,
-                      ),
+                            color: AppColors.secondaryText,
+                            fontWeight: FontWeight.normal,
+                          ),
                       textAlign: TextAlign.center,
                     ),
-                    
+
                     const SizedBox(height: 60),
-                    
+
                     // Loading Indicator
                     const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryOrange),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          AppColors.primaryOrange),
                       strokeWidth: 3,
                     ),
                   ],
