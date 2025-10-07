@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'package:sqflite/sqflite.dart';
+
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
 import '../models/mood.dart';
-import '../models/task.dart';
-import '../models/task_mood.dart';
 import '../models/reminder.dart';
+import '../models/task.dart';
 import '../models/user_preferences.dart';
 import '../utils/app_constants.dart';
 
@@ -98,7 +99,7 @@ class DatabaseHelper {
 
     // Insert default moods
     await _insertDefaultMoods(db);
-    
+
     // Insert default user preferences
     await _insertDefaultUserPreferences(db);
   }
@@ -176,7 +177,7 @@ class DatabaseHelper {
       'tasks',
       orderBy: 'created_at DESC',
     );
-    
+
     List<Task> tasks = [];
     for (var map in maps) {
       Task task = Task.fromMap(map);
@@ -196,7 +197,7 @@ class DatabaseHelper {
       whereArgs: [dateString],
       orderBy: 'created_at DESC',
     );
-    
+
     List<Task> tasks = [];
     for (var map in maps) {
       Task task = Task.fromMap(map);
@@ -214,7 +215,7 @@ class DatabaseHelper {
       WHERE tm.mood_id = ?
       ORDER BY t.created_at DESC
     ''', [moodId]);
-    
+
     List<Task> tasks = [];
     for (var map in maps) {
       Task task = Task.fromMap(map);
@@ -241,12 +242,12 @@ class DatabaseHelper {
 
   Future<int> insertTask(Task task) async {
     final db = await database;
-    
+
     // Start a transaction to ensure data consistency
     return await db.transaction((txn) async {
       // Insert the task
       int taskId = await txn.insert('tasks', task.toMap());
-      
+
       // Insert task-mood relationships
       for (int moodId in task.moodIds) {
         await txn.insert('task_moods', {
@@ -254,14 +255,14 @@ class DatabaseHelper {
           'mood_id': moodId,
         });
       }
-      
+
       return taskId;
     });
   }
 
   Future<int> updateTask(Task task) async {
     final db = await database;
-    
+
     return await db.transaction((txn) async {
       // Update the task
       int result = await txn.update(
@@ -270,14 +271,14 @@ class DatabaseHelper {
         where: 'id = ?',
         whereArgs: [task.id],
       );
-      
+
       // Delete existing task-mood relationships
       await txn.delete(
         'task_moods',
         where: 'task_id = ?',
         whereArgs: [task.id],
       );
-      
+
       // Insert new task-mood relationships
       for (int moodId in task.moodIds) {
         await txn.insert('task_moods', {
@@ -285,7 +286,7 @@ class DatabaseHelper {
           'mood_id': moodId,
         });
       }
-      
+
       return result;
     });
   }
@@ -417,10 +418,10 @@ class DatabaseHelper {
 
   Future<int> updateUserPreferences(UserPreferences preferences) async {
     final db = await database;
-    
+
     // Check if preferences exist
     final existing = await db.query('user_preferences');
-    
+
     if (existing.isEmpty) {
       return await db.insert('user_preferences', preferences.toMap());
     } else {
@@ -465,7 +466,7 @@ class DatabaseHelper {
       await txn.delete('user_preferences');
       await txn.delete('moods');
     });
-    
+
     // Re-insert default data
     await _insertDefaultMoods(db);
     await _insertDefaultUserPreferences(db);
