@@ -39,5 +39,3 @@ class PlanMyMoodApp extends StatelessWidget {
     );
   }
 }
-
-
