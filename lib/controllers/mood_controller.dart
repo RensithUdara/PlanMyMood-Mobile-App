@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
-import '../models/mood.dart';
+
 import '../database/database_helper.dart';
+import '../models/mood.dart';
 
 class MoodController extends ChangeNotifier {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
-  
+
   List<Mood> _moods = [];
   Mood? _selectedMood;
   bool _isLoading = false;
@@ -34,7 +35,8 @@ class MoodController extends ChangeNotifier {
     try {
       final preferences = await _databaseHelper.getUserPreferences();
       if (preferences.selectedMoodId != null) {
-        _selectedMood = await _databaseHelper.getMoodById(preferences.selectedMoodId!);
+        _selectedMood =
+            await _databaseHelper.getMoodById(preferences.selectedMoodId!);
       }
     } catch (e) {
       if (kDebugMode) {
@@ -87,12 +89,12 @@ class MoodController extends ChangeNotifier {
     try {
       await _databaseHelper.deleteMood(moodId);
       _moods.removeWhere((mood) => mood.id == moodId);
-      
+
       // Clear selected mood if it was deleted
       if (_selectedMood?.id == moodId) {
         _selectedMood = null;
       }
-      
+
       notifyListeners();
     } catch (e) {
       if (kDebugMode) {
