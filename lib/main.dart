@@ -6,6 +6,8 @@ import 'controllers/mood_controller.dart';
 import 'controllers/task_controller.dart';
 import 'utils/app_constants.dart';
 import 'utils/app_theme.dart';
+import 'views/screens/home/dashboard.dart';
+import 'views/screens/onboarding/onboarding_flow.dart';
 import 'views/screens/splash_screen.dart';
 
 void main() {
@@ -32,6 +34,10 @@ class PlanMyMoodApp extends StatelessWidget {
             themeMode:
                 appController.isDarkMode ? ThemeMode.dark : ThemeMode.light,
             home: const SplashScreen(),
+            routes: {
+              '/dashboard': (context) => const Dashboard(),
+              '/onboarding': (context) => const OnboardingFlow(),
+            },
             debugShowCheckedModeBanner: false,
           );
         },

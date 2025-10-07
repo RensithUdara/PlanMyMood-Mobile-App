@@ -19,7 +19,6 @@ class AppController extends ChangeNotifier {
 
   Future<void> initialize() async {
     _isLoading = true;
-    notifyListeners();
 
     try {
       await _loadUserPreferences();
@@ -30,7 +29,6 @@ class AppController extends ChangeNotifier {
       }
     } finally {
       _isLoading = false;
-      notifyListeners();
     }
   }
 
