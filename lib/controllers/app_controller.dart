@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/user_preferences.dart';
+
 import '../database/database_helper.dart';
+import '../models/user_preferences.dart';
 import '../utils/app_constants.dart';
 
 class AppController extends ChangeNotifier {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
-  
+
   UserPreferences _userPreferences = UserPreferences();
   bool _isLoading = false;
   bool _isDarkMode = false;
@@ -86,12 +87,12 @@ class AppController extends ChangeNotifier {
       _isDarkMode = !_isDarkMode;
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool(AppConstants.keyTheme, _isDarkMode);
-      
+
       _userPreferences = _userPreferences.copyWith(
         theme: _isDarkMode ? 'dark' : 'light',
       );
       await _databaseHelper.updateUserPreferences(_userPreferences);
-      
+
       notifyListeners();
     } catch (e) {
       if (kDebugMode) {
@@ -117,10 +118,10 @@ class AppController extends ChangeNotifier {
       await _databaseHelper.clearAllData();
       final prefs = await SharedPreferences.getInstance();
       await prefs.clear();
-      
+
       _userPreferences = UserPreferences();
       _isDarkMode = false;
-      
+
       notifyListeners();
     } catch (e) {
       if (kDebugMode) {
@@ -135,13 +136,13 @@ class AppController extends ChangeNotifier {
 
   bool hasMoodBeenSelectedToday() {
     if (_userPreferences.lastMoodUpdate == null) return false;
-    
+
     final now = DateTime.now();
     final lastUpdate = _userPreferences.lastMoodUpdate!;
-    
+
     return now.year == lastUpdate.year &&
-           now.month == lastUpdate.month &&
-           now.day == lastUpdate.day;
+        now.month == lastUpdate.month &&
+        now.day == lastUpdate.day;
   }
 
   Future<void> clearMoodSelection() async {
