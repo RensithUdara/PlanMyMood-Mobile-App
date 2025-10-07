@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 
 import '../database/database_helper.dart';
 import '../models/task.dart';
@@ -22,7 +23,11 @@ class TaskController extends ChangeNotifier {
 
   Future<void> loadTasks() async {
     _isLoading = true;
-    notifyListeners();
+
+    // Delay notification to avoid setState during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
 
     try {
       _tasks = await _databaseHelper.getAllTasks();
@@ -40,7 +45,11 @@ class TaskController extends ChangeNotifier {
   Future<void> loadTasksByDate(DateTime date) async {
     _isLoading = true;
     _selectedDate = date;
-    notifyListeners();
+
+    // Delay notification to avoid setState during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
 
     try {
       _tasks = await _databaseHelper.getTasksByDate(date);
