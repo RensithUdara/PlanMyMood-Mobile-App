@@ -2,7 +2,7 @@ class AppConstants {
   // App Info
   static const String appName = 'PlanMyMood!';
   static const String appTagline = 'Your personal mood-based task planner';
-  
+
   // Onboarding
   static const List<String> onboardingTitles = [
     'Welcome to\nPlanMyMood!',
@@ -10,7 +10,7 @@ class AppConstants {
     'Ready to\nbegin?',
     'Time to choose\nyour mood!',
   ];
-  
+
   static const List<String> onboardingSubtitles = [
     'Your personal mood-based task planner',
     'Discover tasks designed for how you feel today',
