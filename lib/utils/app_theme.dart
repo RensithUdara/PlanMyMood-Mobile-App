@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
+
 import 'app_colors.dart';
 
 class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.light(
+      colorScheme: const ColorScheme.light(
         primary: AppColors.primaryOrange,
         onPrimary: AppColors.lightText,
         secondary: AppColors.pressedOrange,
         onSecondary: AppColors.lightText,
         surface: AppColors.lightCream,
         onSurface: AppColors.primaryText,
-        background: AppColors.creamBeige,
-        onBackground: AppColors.primaryText,
         error: AppColors.angry,
         onError: AppColors.lightText,
       ),
@@ -132,9 +131,11 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.primaryOrange, width: 2),
+          borderSide:
+              const BorderSide(color: AppColors.primaryOrange, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         hintStyle: const TextStyle(
           color: AppColors.secondaryText,
           fontSize: 18,
@@ -193,15 +194,13 @@ class AppTheme {
   static ThemeData get darkTheme {
     return lightTheme.copyWith(
       // Add dark theme customizations here
-      colorScheme: ColorScheme.dark(
+      colorScheme: const ColorScheme.dark(
         primary: AppColors.primaryOrange,
         onPrimary: AppColors.lightText,
         secondary: AppColors.pressedOrange,
         onSecondary: AppColors.lightText,
         surface: AppColors.darkCharcoal,
         onSurface: AppColors.lightText,
-        background: const Color(0xFF1A1A1A),
-        onBackground: AppColors.lightText,
         error: AppColors.angry,
         onError: AppColors.lightText,
       ),
