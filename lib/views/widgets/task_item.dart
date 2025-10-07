@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../models/task.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_constants.dart';
@@ -22,11 +23,11 @@ class TaskItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: AppColors.shadow,
             blurRadius: 4,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
       ),
@@ -53,9 +54,9 @@ class TaskItem extends StatelessWidget {
                     size: 20,
                   ),
                 ),
-                
+
                 const SizedBox(width: AppConstants.paddingMedium),
-                
+
                 // Task Content
                 Expanded(
                   child: Column(
@@ -65,27 +66,29 @@ class TaskItem extends StatelessWidget {
                       Text(
                         task.title,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: task.isCompleted 
-                              ? AppColors.secondaryText 
-                              : AppColors.primaryText,
-                          decoration: task.isCompleted 
-                              ? TextDecoration.lineThrough 
-                              : null,
-                          fontWeight: FontWeight.w600,
-                        ),
+                              color: task.isCompleted
+                                  ? AppColors.secondaryText
+                                  : AppColors.primaryText,
+                              decoration: task.isCompleted
+                                  ? TextDecoration.lineThrough
+                                  : null,
+                              fontWeight: FontWeight.w600,
+                            ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      
+
                       // Task Description (if available)
-                      if (task.description != null && task.description!.isNotEmpty)
+                      if (task.description != null &&
+                          task.description!.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
                           child: Text(
                             task.description!,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.secondaryText,
-                            ),
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: AppColors.secondaryText,
+                                    ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -93,7 +96,7 @@ class TaskItem extends StatelessWidget {
                     ],
                   ),
                 ),
-                
+
                 // Task Status Icons
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -102,25 +105,26 @@ class TaskItem extends StatelessWidget {
                     if (task.isFavorite)
                       Container(
                         margin: const EdgeInsets.only(right: 8),
-                        child: Icon(
+                        child: const Icon(
                           Icons.star,
                           color: AppColors.yellowTask,
                           size: 20,
                         ),
                       ),
-                    
+
                     // Completion Status
                     Container(
                       width: 24,
                       height: 24,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: task.isCompleted 
-                            ? AppColors.greenTask 
+                        color: task.isCompleted
+                            ? AppColors.greenTask
                             : Colors.transparent,
-                        border: task.isCompleted 
-                            ? null 
-                            : Border.all(color: AppColors.grayDisabled, width: 2),
+                        border: task.isCompleted
+                            ? null
+                            : Border.all(
+                                color: AppColors.grayDisabled, width: 2),
                       ),
                       child: task.isCompleted
                           ? const Icon(
