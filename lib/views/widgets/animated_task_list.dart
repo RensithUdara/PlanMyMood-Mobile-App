@@ -4,7 +4,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../../models/task.dart';
 import '../../utils/app_colors.dart';
-import '../../utils/app_constants.dart';
 
 class AnimatedTaskList extends StatelessWidget {
   final List<Task> tasks;
@@ -34,7 +33,7 @@ class AnimatedTaskList extends StatelessWidget {
         itemCount: tasks.length,
         itemBuilder: (context, index) {
           final task = tasks[index];
-          
+
           return AnimationConfiguration.staggeredList(
             position: index,
             duration: const Duration(milliseconds: 375),
@@ -47,17 +46,18 @@ class AnimatedTaskList extends StatelessWidget {
                   onCompleted: () => onTaskCompleted(task),
                   onFavorited: () => onTaskFavorited(task),
                   onDeleted: () => onTaskDeleted(task),
-                ).animate()
-                  .scale(
-                    duration: 200.ms,
-                    curve: Curves.easeInOut,
-                  )
-                  .then()
-                  .shimmer(duration: 1000.ms, colors: [
-                    Colors.transparent,
-                    Colors.white.withOpacity(0.1),
-                    Colors.transparent,
-                  ]),
+                )
+                    .animate()
+                    .scale(
+                      duration: 200.ms,
+                      curve: Curves.easeInOut,
+                    )
+                    .then()
+                    .shimmer(duration: 1000.ms, colors: [
+                  Colors.transparent,
+                  Colors.white.withOpacity(0.1),
+                  Colors.transparent,
+                ]),
               ),
             ),
           );
@@ -166,8 +166,8 @@ class _TaskCardState extends State<TaskCard>
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: Color(int.parse(
-                                  widget.task.iconColor.replaceAll('#', '0xFF')))
+                          color: Color(int.parse(widget.task.iconColor
+                                  .replaceAll('#', '0xFF')))
                               .withOpacity(0.2),
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -178,7 +178,7 @@ class _TaskCardState extends State<TaskCard>
                         ),
                       ),
                       const SizedBox(width: 16),
-                      
+
                       // Task Content
                       Expanded(
                         child: Column(
@@ -216,7 +216,7 @@ class _TaskCardState extends State<TaskCard>
                           ],
                         ),
                       ),
-                      
+
                       // Action Buttons
                       Column(
                         children: [
@@ -233,9 +233,9 @@ class _TaskCardState extends State<TaskCard>
                               ),
                               onPressed: widget.onFavorited,
                             ),
-                          ).animate(target: widget.task.isFavorite ? 1 : 0)
-                            .scale(duration: 200.ms),
-                          
+                          )
+                              .animate(target: widget.task.isFavorite ? 1 : 0)
+                              .scale(duration: 200.ms),
                           AnimatedContainer(
                             duration: const Duration(milliseconds: 200),
                             child: IconButton(
@@ -249,8 +249,9 @@ class _TaskCardState extends State<TaskCard>
                               ),
                               onPressed: widget.onCompleted,
                             ),
-                          ).animate(target: widget.task.isCompleted ? 1 : 0)
-                            .scale(duration: 200.ms),
+                          )
+                              .animate(target: widget.task.isCompleted ? 1 : 0)
+                              .scale(duration: 200.ms),
                         ],
                       ),
                     ],
@@ -309,13 +310,12 @@ class EmptyTasksWidget extends StatelessWidget {
               size: 60,
               color: AppColors.primaryOrange,
             ),
-          ).animate()
-            .scale(duration: 600.ms, curve: Curves.elasticOut)
-            .then()
-            .shimmer(duration: 2000.ms),
-          
+          )
+              .animate()
+              .scale(duration: 600.ms, curve: Curves.elasticOut)
+              .then()
+              .shimmer(duration: 2000.ms),
           const SizedBox(height: 24),
-          
           Text(
             'No tasks yet',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -323,9 +323,7 @@ class EmptyTasksWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
           ).animate().fadeIn(delay: 300.ms, duration: 500.ms),
-          
           const SizedBox(height: 8),
-          
           Text(
             'Create your first task to get started!',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -333,9 +331,7 @@ class EmptyTasksWidget extends StatelessWidget {
                 ),
             textAlign: TextAlign.center,
           ).animate().fadeIn(delay: 500.ms, duration: 500.ms),
-          
           const SizedBox(height: 32),
-          
           ElevatedButton.icon(
             onPressed: () {
               // This would trigger the FAB action
@@ -352,9 +348,10 @@ class EmptyTasksWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-          ).animate()
-            .fadeIn(delay: 700.ms, duration: 500.ms)
-            .slideY(begin: 0.3, delay: 700.ms, duration: 500.ms),
+          )
+              .animate()
+              .fadeIn(delay: 700.ms, duration: 500.ms)
+              .slideY(begin: 0.3, delay: 700.ms, duration: 500.ms),
         ],
       ),
     );
