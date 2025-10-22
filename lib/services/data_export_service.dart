@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -8,8 +9,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../database/database_helper.dart';
-import '../models/task.dart';
 import '../models/mood.dart';
+import '../models/task.dart';
 
 class DataExportService {
   static final DataExportService _instance = DataExportService._internal();
@@ -30,14 +31,14 @@ class DataExportService {
     try {
       final tasks = await _databaseHelper.getAllTasks();
       final moods = await _databaseHelper.getAllMoods();
-      
+
       final exportData = {
         'version': '1.0',
         'export_date': DateTime.now().toIso8601String(),
         'tasks': tasks.map((task) => task.toMap()).toList(),
         'moods': moods.map((mood) => mood.toMap()).toList(),
       };
-      
+
       return json.encode(exportData);
     } catch (e) {
       if (kDebugMode) {
@@ -50,11 +51,20 @@ class DataExportService {
   Future<String> exportTasksAsCsv() async {
     try {
       final tasks = await _databaseHelper.getAllTasks();
-      
+
       List<List<dynamic>> csvData = [
-        ['Title', 'Description', 'Date', 'Completed', 'Favorite', 'Icon Type', 'Icon Color', 'Created At']
+        [
+          'Title',
+          'Description',
+          'Date',
+          'Completed',
+          'Favorite',
+          'Icon Type',
+          'Icon Color',
+          'Created At'
+        ]
       ];
-      
+
       for (final task in tasks) {
         csvData.add([
           task.title,
@@ -67,7 +77,7 @@ class DataExportService {
           task.createdAt?.toIso8601String().split('T')[0] ?? '',
         ]);
       }
-      
+
       return const ListToCsvConverter().convert(csvData);
     } catch (e) {
       if (kDebugMode) {
@@ -98,7 +108,7 @@ class DataExportService {
         [XFile(file.path, mimeType: mimeType)],
         text: 'PlanMyMood Data Export',
       );
-      
+
       return result.status == ShareResultStatus.success;
     } catch (e) {
       if (kDebugMode) {
@@ -111,7 +121,8 @@ class DataExportService {
   Future<bool> exportAndShareJson() async {
     try {
       final jsonData = await exportDataAsJson();
-      final filename = 'planmymood_backup_${DateTime.now().millisecondsSinceEpoch}.json';
+      final filename =
+          'planmymood_backup_${DateTime.now().millisecondsSinceEpoch}.json';
       return await shareData(jsonData, filename, 'application/json');
     } catch (e) {
       if (kDebugMode) {
@@ -124,7 +135,8 @@ class DataExportService {
   Future<bool> exportAndShareCsv() async {
     try {
       final csvData = await exportTasksAsCsv();
-      final filename = 'planmymood_tasks_${DateTime.now().millisecondsSinceEpoch}.csv';
+      final filename =
+          'planmymood_tasks_${DateTime.now().millisecondsSinceEpoch}.csv';
       return await shareData(csvData, filename, 'text/csv');
     } catch (e) {
       if (kDebugMode) {
@@ -145,15 +157,15 @@ class DataExportService {
         final file = File(result.files.single.path!);
         final contents = await file.readAsString();
         final data = json.decode(contents) as Map<String, dynamic>;
-        
+
         // Validate data structure
         if (!_isValidImportData(data)) {
           throw Exception('Invalid data format');
         }
-        
+
         return data;
       }
-      
+
       return null;
     } catch (e) {
       if (kDebugMode) {
@@ -167,7 +179,7 @@ class DataExportService {
     try {
       // Clear existing data (with user confirmation in UI)
       // This is a destructive operation, should be handled carefully
-      
+
       // Import tasks
       if (importData['tasks'] != null) {
         final tasksData = importData['tasks'] as List;
@@ -183,13 +195,13 @@ class DataExportService {
           }
         }
       }
-      
+
       // Import moods (if they don't exist)
       if (importData['moods'] != null) {
         final moodsData = importData['moods'] as List;
         final existingMoods = await _databaseHelper.getAllMoods();
         final existingMoodNames = existingMoods.map((m) => m.name).toSet();
-        
+
         for (final moodData in moodsData) {
           try {
             final mood = Mood.fromMap(moodData);
@@ -204,7 +216,7 @@ class DataExportService {
           }
         }
       }
-      
+
       return true;
     } catch (e) {
       if (kDebugMode) {
@@ -216,31 +228,32 @@ class DataExportService {
 
   bool _isValidImportData(Map<String, dynamic> data) {
     return data.containsKey('version') &&
-           data.containsKey('export_date') &&
-           (data.containsKey('tasks') || data.containsKey('moods'));
+        data.containsKey('export_date') &&
+        (data.containsKey('tasks') || data.containsKey('moods'));
   }
 
   Future<Map<String, dynamic>> getDataStatistics() async {
     try {
       final tasks = await _databaseHelper.getAllTasks();
       final moods = await _databaseHelper.getAllMoods();
-      
+
       final completedTasks = tasks.where((t) => t.isCompleted).length;
       final favoriteTasks = tasks.where((t) => t.isFavorite).length;
-      
+
       final now = DateTime.now();
       final thisMonth = DateTime(now.year, now.month);
-      final tasksThisMonth = tasks.where((t) => 
-        t.createdAt?.isAfter(thisMonth) ?? false
-      ).length;
-      
+      final tasksThisMonth =
+          tasks.where((t) => t.createdAt?.isAfter(thisMonth) ?? false).length;
+
       return {
         'total_tasks': tasks.length,
         'completed_tasks': completedTasks,
         'favorite_tasks': favoriteTasks,
         'tasks_this_month': tasksThisMonth,
         'total_moods': moods.length,
-        'completion_rate': tasks.isNotEmpty ? (completedTasks / tasks.length * 100).round() : 0,
+        'completion_rate': tasks.isNotEmpty
+            ? (completedTasks / tasks.length * 100).round()
+            : 0,
         'data_size_kb': (await exportDataAsJson()).length ~/ 1024,
       };
     } catch (e) {
