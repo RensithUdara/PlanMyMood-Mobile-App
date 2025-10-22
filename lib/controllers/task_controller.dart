@@ -121,10 +121,8 @@ class TaskController extends ChangeNotifier {
     });
   }
 
-  Future<Result<Task>> addTask(Task task) async {
+  Future<Task?> addTask(Task task) async {
     try {
-      logger.info('Adding new task: ${task.title}');
-
       final id = await _databaseHelper.insertTask(task);
       final newTask = task.copyWith(
         id: id,
@@ -136,15 +134,14 @@ class TaskController extends ChangeNotifier {
       _applyFilters();
       notifyListeners();
 
-      logger.info('Task added successfully with ID: $id');
-      return Result.success(newTask);
-    } catch (e, stackTrace) {
-      logger.error('Error adding task: ${task.title}', e, stackTrace);
-      return Result.failure('Failed to add task. Please try again.');
+      return newTask;
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error adding task: $e');
+      }
+      return null;
     }
-  }
-
-  Future<bool> updateTask(Task task) async {
+  }  Future<bool> updateTask(Task task) async {
     try {
       final updatedTask = task.copyWith(updatedAt: DateTime.now());
       await _databaseHelper.updateTask(updatedTask);
