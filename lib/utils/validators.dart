@@ -17,7 +17,7 @@ class AppValidators {
 
   static String? validateDescription(String? value) {
     if (value == null || value.isEmpty) return null;
-    
+
     return ValidationBuilder()
         .maxLength(500, 'Description must not exceed 500 characters')
         .build()(value);
@@ -48,11 +48,11 @@ class AppValidators {
 
   static String? validateDateRange(DateTime? startDate, DateTime? endDate) {
     if (startDate == null || endDate == null) return null;
-    
+
     if (endDate.isBefore(startDate)) {
       return 'End date must be after start date';
     }
-    
+
     return null;
   }
 
