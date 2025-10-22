@@ -139,11 +139,13 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
 
     LoadingOverlay.show(
       context,
-      message: widget.taskToEdit != null ? 'Updating task...' : 'Creating task...',
+      message:
+          widget.taskToEdit != null ? 'Updating task...' : 'Creating task...',
     );
 
     try {
-      final taskController = Provider.of<TaskController>(context, listen: false);
+      final taskController =
+          Provider.of<TaskController>(context, listen: false);
 
       final task = Task(
         id: _isEditing ? widget.taskToEdit!.id : null,
