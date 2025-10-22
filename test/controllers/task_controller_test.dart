@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:planmymood_mobileapp/controllers/task_controller.dart';
 import 'package:planmymood_mobileapp/database/database_helper.dart';
 import 'package:planmymood_mobileapp/models/task.dart';
@@ -39,8 +39,7 @@ void main() {
         ),
       ];
 
-      when(mockDatabaseHelper.getAllTasks())
-          .thenAnswer((_) async => mockTasks);
+      when(mockDatabaseHelper.getAllTasks()).thenAnswer((_) async => mockTasks);
 
       // Act
       await taskController.loadTasks();
@@ -60,8 +59,9 @@ void main() {
 
     test('toggleTaskFavorite should update task favorite status', () async {
       // Arrange
-      when(mockDatabaseHelper.toggleTaskFavorite(1))
-          .thenAnswer((_) async {});
+      when(mockDatabaseHelper.toggleTaskFavorite(1)).thenAnswer((_) async {
+        return null;
+      });
 
       // Act
       final result = await taskController.toggleTaskFavorite(1);
