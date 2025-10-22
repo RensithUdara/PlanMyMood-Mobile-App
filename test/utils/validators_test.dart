@@ -20,7 +20,8 @@ void main() {
       });
 
       test('should use custom field name in error message', () {
-        final result = AppValidators.validateRequired(null, fieldName: 'Username');
+        final result =
+            AppValidators.validateRequired(null, fieldName: 'Username');
         expect(result, equals('Username is required'));
       });
     });
