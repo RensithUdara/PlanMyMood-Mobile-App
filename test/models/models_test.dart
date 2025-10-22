@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:planmymood_mobileapp/models/task.dart';
 import 'package:planmymood_mobileapp/models/mood.dart';
+import 'package:planmymood_mobileapp/models/task.dart';
 
 void main() {
   group('Task Model Tests', () {
