@@ -20,7 +20,7 @@ void main() {
 
       // Navigate through onboarding screens
       final nextButton = find.text('Next');
-      
+
       // First onboarding screen
       await tester.tap(nextButton);
       await tester.pumpAndSettle();
@@ -86,7 +86,8 @@ void main() {
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
     });
 
-    testWidgets('Navigate between different sections', (WidgetTester tester) async {
+    testWidgets('Navigate between different sections',
+        (WidgetTester tester) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
@@ -112,19 +113,21 @@ void main() {
       }
     });
 
-    testWidgets('Test mood selection and filtering', (WidgetTester tester) async {
+    testWidgets('Test mood selection and filtering',
+        (WidgetTester tester) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
       // Tap on mood indicator to change mood
       // This would depend on your UI implementation
-      
+
       // Create a task with specific mood
       await tester.tap(find.byType(FloatingActionButton));
       await tester.pumpAndSettle();
 
-      await tester.enterText(find.byType(TextFormField).first, 'Mood-specific Task');
-      
+      await tester.enterText(
+          find.byType(TextFormField).first, 'Mood-specific Task');
+
       // Select mood for task
       // Implementation would depend on your mood selection UI
 
@@ -135,7 +138,8 @@ void main() {
       // Implementation would depend on your filtering UI
     });
 
-    testWidgets('Test data persistence across app restarts', (WidgetTester tester) async {
+    testWidgets('Test data persistence across app restarts',
+        (WidgetTester tester) async {
       // Create a task
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
@@ -143,7 +147,8 @@ void main() {
       await tester.tap(find.byType(FloatingActionButton));
       await tester.pumpAndSettle();
 
-      await tester.enterText(find.byType(TextFormField).first, 'Persistent Task');
+      await tester.enterText(
+          find.byType(TextFormField).first, 'Persistent Task');
       await tester.tap(find.text('Save Task'));
       await tester.pumpAndSettle();
 
