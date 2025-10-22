@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 import 'package:uuid/uuid.dart';
 
 class AnalyticsService {
@@ -11,7 +12,7 @@ class AnalyticsService {
   static const String _sessionKey = 'analytics_session_id';
   static const String _userIdKey = 'analytics_user_id';
   static const String _eventsKey = 'analytics_events';
-  
+
   String? _sessionId;
   String? _userId;
   final List<AnalyticsEvent> _events = [];
@@ -20,28 +21,28 @@ class AnalyticsService {
   Future<void> initialize() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       // Get or create user ID
       _userId = prefs.getString(_userIdKey);
       if (_userId == null) {
         _userId = _uuid.v4();
         await prefs.setString(_userIdKey, _userId!);
       }
-      
+
       // Create new session
       _sessionId = _uuid.v4();
       await prefs.setString(_sessionKey, _sessionId!);
-      
+
       // Load pending events
       await _loadPendingEvents();
-      
+
       // Track session start
       await trackEvent('session_start', {
         'session_id': _sessionId,
         'user_id': _userId,
         'timestamp': DateTime.now().toIso8601String(),
       });
-      
+
       if (kDebugMode) {
         print('Analytics initialized with session: $_sessionId');
       }
@@ -52,7 +53,8 @@ class AnalyticsService {
     }
   }
 
-  Future<void> trackEvent(String eventName, [Map<String, dynamic>? properties]) async {
+  Future<void> trackEvent(String eventName,
+      [Map<String, dynamic>? properties]) async {
     try {
       final event = AnalyticsEvent(
         name: eventName,
@@ -64,12 +66,12 @@ class AnalyticsService {
         },
         timestamp: DateTime.now(),
       );
-      
+
       _events.add(event);
-      
+
       // Save events locally
       await _saveEvents();
-      
+
       if (kDebugMode) {
         print('Analytics: $eventName - ${event.properties}');
       }
@@ -107,7 +109,8 @@ class AnalyticsService {
     });
   }
 
-  Future<void> trackUserAction(String action, [Map<String, dynamic>? data]) async {
+  Future<void> trackUserAction(String action,
+      [Map<String, dynamic>? data]) async {
     await trackEvent('user_action', {
       'action': action,
       ...?data,
@@ -147,11 +150,12 @@ class AnalyticsService {
   Future<Map<String, dynamic>> getAnalyticsSummary() async {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    
-    final todayEvents = _events.where((e) => 
-      e.timestamp.isAfter(today) || e.timestamp.isAtSameMomentAs(today)
-    ).toList();
-    
+
+    final todayEvents = _events
+        .where((e) =>
+            e.timestamp.isAfter(today) || e.timestamp.isAtSameMomentAs(today))
+        .toList();
+
     return {
       'total_events': _events.length,
       'today_events': todayEvents.length,
@@ -167,10 +171,10 @@ class AnalyticsService {
     for (final event in _events) {
       actionCounts[event.name] = (actionCounts[event.name] ?? 0) + 1;
     }
-    
+
     final sorted = actionCounts.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
-    
+
     return Map.fromEntries(sorted.take(5));
   }
 
@@ -190,7 +194,7 @@ class AnalyticsService {
       _events.clear();
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_eventsKey);
-      
+
       if (kDebugMode) {
         print('Analytics data cleared');
       }
