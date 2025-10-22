@@ -49,7 +49,7 @@ class AppSnackBar {
                 onPressed: onAction,
               )
             : null,
-      ).animate().slideY(begin: 1, duration: 300.ms).fadeIn(),
+      ),
     );
   }
 
