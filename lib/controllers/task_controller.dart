@@ -141,7 +141,9 @@ class TaskController extends ChangeNotifier {
       }
       return null;
     }
-  }  Future<bool> updateTask(Task task) async {
+  }
+
+  Future<bool> updateTask(Task task) async {
     try {
       final updatedTask = task.copyWith(updatedAt: DateTime.now());
       await _databaseHelper.updateTask(updatedTask);
