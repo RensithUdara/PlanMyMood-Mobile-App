@@ -106,11 +106,42 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
   }
 
   Future<void> _saveTask() async {
-    if (!_formKey.currentState!.validate()) return;
+    // Validate form
+    if (!_formKey.currentState!.validate()) {
+      AppSnackBar.show(
+        context,
+        message: 'Please fix the errors before saving',
+        type: SnackBarType.warning,
+      );
+      return;
+    }
+
+    // Validate task data
+    final validationError = AppValidators.validateTaskData(
+      title: _titleController.text.trim(),
+      iconType: _selectedIconType,
+      iconColor: _selectedIconColor,
+      date: _selectedDate,
+    );
+
+    if (validationError != null) {
+      AppSnackBar.show(
+        context,
+        message: validationError,
+        type: SnackBarType.error,
+      );
+      return;
+    }
 
     setState(() {
       _isLoading = true;
     });
+
+    LoadingOverlay.show(
+      context,
+      message:
+          widget.taskToEdit != null ? 'Updating task...' : 'Creating task...',
+    );
 
     try {
       final taskController =
