@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:planmymood_mobileapp/views/widgets/mood_grid.dart';
 import 'package:planmymood_mobileapp/models/mood.dart';
+import 'package:planmymood_mobileapp/views/widgets/mood_grid.dart';
 
 void main() {
   group('MoodGrid Widget Tests', () {
