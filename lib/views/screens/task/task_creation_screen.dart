@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../controllers/mood_controller.dart';
 import '../../../controllers/task_controller.dart';
@@ -9,11 +8,7 @@ import '../../../models/mood.dart';
 import '../../../models/task.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_constants.dart';
-import '../../../utils/validators.dart';
 import '../../../views/widgets/mood_selector.dart';
-import '../../../views/widgets/feedback_widgets.dart';
-import '../../../views/widgets/loading_widget.dart';
-import '../../../services/analytics_service.dart';
 
 class TaskCreationScreen extends StatefulWidget {
   final DateTime initialDate;
