@@ -148,7 +148,8 @@ class LoadingOverlay {
             mainAxisSize: MainAxisSize.min,
             children: [
               const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryOrange),
+                valueColor:
+                    AlwaysStoppedAnimation<Color>(AppColors.primaryOrange),
               ),
               if (message != null) ...[
                 const SizedBox(height: 16),
